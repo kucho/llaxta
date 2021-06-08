@@ -1,21 +1,24 @@
 # frozen_string_literal: true
 
 require "pry"
+require "yaml"
 
-module Country
+class Llaxta
   # TODO: validate valid alpha2
   # TODO: validate valid locale
   # TODO: allow receiving downcase alpha2
   # TODO: allow receiving downcase locale
   # TODO: add exception cases
-  def Country(alpha2, locale)
-    (locale_file || {})[alpha2]
+
+  def self.t(alpha2, locale)
+    load_locale(locale)[alpha2]
   end
 
   private
 
-  def locale_file
-    @locale_file ||=
+  def self.load_locale(locale)
+    @@locales ||= {}
+    @@locales[locale] ||=
       begin
         YAML.load_file(locale_path(locale))
       rescue Errno::ENOENT
@@ -23,7 +26,7 @@ module Country
       end
   end
 
-  def locale_path(locale)
+  def self.locale_path(locale)
     "./lib/country/locales/#{locale}.yml"
   end
 end

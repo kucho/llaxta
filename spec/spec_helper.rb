@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "rspec"
-require "country"
+require "llaxta"
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|

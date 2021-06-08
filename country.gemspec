@@ -4,7 +4,7 @@ require "country/version"
 
 Gem::Specification.new do |spec|
   spec.name = "country"
-  spec.required_ruby_version = ">= 2.4.0"
+  spec.required_ruby_version = ">= 2.2.0"
   spec.homepage = "https://github.com/kucho/contry"
   spec.version = Country::VERSION
   spec.platform = Gem::Platform::RUBY
