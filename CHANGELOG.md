@@ -1,4 +1,8 @@
-# 0.0.2 (June 9, 2021)
+# 0.0.3 (June 9, 2021) 
+
+- Restore locale files
+
+# 0.0.2 (June 9, 2021) (yanked)
 
 - Removed data submodule
 
