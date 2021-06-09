@@ -14,8 +14,6 @@ class Llaxta
     load_locale(locale)[alpha2]
   end
 
-  private
-
   def self.load_locale(locale)
     @@locales ||= {}
     @@locales[locale] ||=
