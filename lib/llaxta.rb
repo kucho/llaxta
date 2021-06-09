@@ -8,33 +8,35 @@ class Llaxta
   VERSION = Gem::Version.new("0.0.1")
 
   def self.t(alpha2, locale)
-    dictionary = new(alpha2, locale).send(:load_dict)
-    dictionary[alpha2]
+    raise Exceptions::AlphaMissing unless alpha2
+
+    dictionary(locale)[alpha2]
   end
 
-  def initialize(alpha, locale)
-    alpha ? @alpha = alpha : raise(Exceptions::AlphaMissing)
-    locale ? @locale = locale : raise(Exceptions::LocaleMissing)
-    parse_locale!
+  def self.dictionary(locale)
+    @@locales ||= {}
+    @@locales[locale] ||= new(locale).load_dict
+  end
+
+  def initialize(locale)
+    raise Exceptions::LocaleMissing unless locale
+
+    @locale = sanitize_locale(locale)
+  end
+
+  def load_dict
+    YAML.load_file(locale_path)
+  rescue Errno::ENOENT
+    raise Exceptions::LocaleNotFound.new locale
   end
 
   private
 
-  attr_reader :locale, :alpha
+  attr_reader :locale
 
-  def load_dict
-    @@locales ||= {}
-    @@locales[locale] ||=
-      begin
-        YAML.load_file(locale_path)
-      rescue Errno::ENOENT
-        raise Exceptions::LocaleNotFound.new locale
-      end
-  end
-
-  def parse_locale!
+  def sanitize_locale(locale)
     language, country = locale.split("_")
-    @locale = [language.downcase, country&.upcase].compact.join("_")
+    [language.downcase, country&.upcase].compact.join("_")
   end
 
   def locale_path
