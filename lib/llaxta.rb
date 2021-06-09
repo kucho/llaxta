@@ -4,7 +4,7 @@ require "yaml"
 require "llaxta/exceptions"
 
 class Llaxta
-  VERSION = Gem::Version.new("0.0.1")
+  VERSION = Gem::Version.new("0.0.2")
 
   class << self
     def t(alpha2, locale)
