@@ -1,6 +1,6 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "llaxta/version"
+require "llaxta"
 
 Gem::Specification.new do |spec|
   spec.name = "llaxta"
@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/kucho/llaxta"
   spec.version = Llaxta::VERSION
   spec.platform = Gem::Platform::RUBY
-  spec.summary = ""
-  spec.description = ""
+  spec.summary = "Translate ISO 3166-1 codes to Country names given a locale"
+  spec.description = "Translate ISO 3166-1 codes to Country names given a locale"
   spec.authors = ["Victor Rodriguez", "Sebastian Palma"]
   spec.email = "victor.rodriguez.guriz@gmail.com"
   spec.license = "MIT"

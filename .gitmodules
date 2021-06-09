@@ -1,0 +1,3 @@
+[submodule "lib/llaxta/locales"]
+	path = lib/llaxta/locales
+	url = https://github.com/umpirsky/country-list
