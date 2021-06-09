@@ -1,45 +1,54 @@
 # frozen_string_literal: true
 
-require "pry"
 require "yaml"
 require "llaxta/exceptions"
 
 class Llaxta
   VERSION = Gem::Version.new("0.0.1")
 
-  def self.t(alpha2, locale)
-    raise Exceptions::AlphaMissing unless alpha2
+  class << self
+    def t(alpha2, locale)
+      raise Exceptions::AlphaMissing unless alpha2
 
-    dictionary(locale)[alpha2]
-  end
+      dictionary(locale)[alpha2]
+    end
 
-  def self.dictionary(locale)
-    @@locales ||= {}
-    @@locales[locale] ||= new(locale).load_dict
-  end
+    private
 
-  def initialize(locale)
-    raise Exceptions::LocaleMissing unless locale
-
-    @locale = sanitize_locale(locale)
-  end
-
-  def load_dict
-    YAML.load_file(locale_path)
-  rescue Errno::ENOENT
-    raise Exceptions::LocaleNotFound.new locale
+    def dictionary(locale)
+      @@locales ||= {}
+      @@locales[locale] ||= new(locale).send(:load_dict)
+    end
   end
 
   private
 
   attr_reader :locale
 
-  def sanitize_locale(locale)
-    language, country = locale.split("_")
-    [language.downcase, country&.upcase].compact.join("_")
+  SUPPORTED_LOCALES = {
+    "en_us" => "en_us",
+    "us" => "en_us",
+    "es" => "es",
+    "pt_br" => "pt_br",
+    "br" => "pt_br",
+    "zh_cn" => "zh_cn",
+    "cn" => "zh_cn",
+  }.freeze
+  private_constant :SUPPORTED_LOCALES
+
+  def initialize(locale)
+    raise Exceptions::LocaleMissing unless locale
+
+    @locale = SUPPORTED_LOCALES[locale]
+  end
+
+  def load_dict
+    YAML.load_file(locale_path)
+  rescue Errno::ENOENT
+    raise Exceptions::LocaleNotFound.new(locale)
   end
 
   def locale_path
-    File.expand_path("../llaxta/locales/data/#{locale}/country.yaml", __FILE__)
+    File.expand_path("../llaxta/locales/#{locale}.yml", __FILE__)
   end
 end
