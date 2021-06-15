@@ -43,21 +43,51 @@ RSpec.describe Llaxta do
     end
   end
 
+  describe ".alpha2" do
+    context "when country exists in the file for the given language" do
+      context "with locale br" do
+        it { expect(Llaxta.alpha2("Etiópia", "br")).to eq("ET") }
+      end
+
+      context "with locale cn" do
+        it { expect(Llaxta.alpha2("埃塞俄比亚", "cn")).to eq("ET") }
+      end
+
+      context "with locale es" do
+        it { expect(Llaxta.alpha2("Etiopía", "es")).to eq("ET") }
+      end
+
+      context "with locale us" do
+        it { expect(Llaxta.alpha2("Ethiopia", "us")).to eq("ET") }
+      end
+    end
+
+    context "when country does not exist in the file for the given language" do
+      it { expect(Llaxta.alpha2("NA", "us")).to be_nil }
+    end
+
+    context "with an unsupported locale" do
+      it "raises a LocaleNotFound exception" do
+        expect { Llaxta.alpha2("Chile", "oa") }.to raise_exception Exceptions::LocaleNotFound
+      end
+    end
+  end
+
   describe "exceptions" do
     context "when locale is NOT valid" do
-      it "raises" do
+      it "raises a LocaleNotFound exception" do
         expect { Llaxta.t("PE", "2GFA") }.to raise_exception Exceptions::LocaleNotFound
       end
     end
 
     context "when alpha is nil" do
-      it "raises" do
+      it "raises a AlphaMissing exception" do
         expect { Llaxta.t(nil, "br") }.to raise_exception Exceptions::AlphaMissing
       end
     end
 
     context "when locale is nil" do
-      it "raises" do
+      it "raises a LocaleMissing exception" do
         expect { Llaxta.t("PE", nil) }.to raise_exception Exceptions::LocaleMissing
       end
     end

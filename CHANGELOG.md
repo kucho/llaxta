@@ -1,4 +1,8 @@
-# 0.0.3 (June 9, 2021) 
+# 0.0.4 (June 15, 2021)
+
+- Add the Llaxta.alpha2 method
+
+# 0.0.3 (June 9, 2021)
 
 - Restore locale files
 
