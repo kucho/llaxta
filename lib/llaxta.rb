@@ -65,7 +65,7 @@ class Llaxta
     def filter(term, aligment, list)
       return list unless term
 
-      selected = case aligment
+      case aligment
       when -1
         list.filter { |e| e.downcase.start_with?(term) }
       when 0
@@ -75,7 +75,7 @@ class Llaxta
       else
         raise Exceptions::AlignmentError
       end
-    end 
+    end
   end
 
   private
